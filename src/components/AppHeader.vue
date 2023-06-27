@@ -1,5 +1,5 @@
 <template>
-  <header style="border-color: #0d6efd">
+  <header>
     <div class="container">
       <div class="row">
         <div class="col">
@@ -21,6 +21,7 @@ header {
   text-align: center;
   background: #FFF7EC;
   border-bottom: 20px solid #0d6efd;
+  border-color: #0d6efd;
   position: sticky;
   top: 0;
   left: 0;
