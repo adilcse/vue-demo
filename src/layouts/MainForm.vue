@@ -204,10 +204,15 @@ export default {
         },
         getList() {
             this.loading = true;
-            fetch('http://localhost:3000/api/v1/demo').then(res => res.json())
+            fetch('http://localhost:3000/api/v1/demo').then(async(res) => {
+                if(res.ok) {
+                    return res.json();
+                }
+                const error = await res.json();
+                throw new Error(error?.message)
+            })
                 .then(resp => {
                     this.usersList = resp;
-                    console.log(resp)
                 })
                 .catch((error) => console.error(error))
                 .finally(() => this.loading = false)

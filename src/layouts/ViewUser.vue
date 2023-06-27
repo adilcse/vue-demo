@@ -29,7 +29,6 @@
     },
     methods: {
       onEditClick(user) {
-        console.log(user);
         this.$emit('onEditClick', user);
       },
       deleteItem(item) {
