@@ -1,7 +1,7 @@
 <template>
-  <button :class="btnClasses" @click="buttonClick" type="type">
+  <b-button variant="outline-primary" :class="btnClasses" @click="buttonClick" type="type">
     {{ label }}
-  </button>
+  </b-button>
 </template>
 
 <script>
@@ -22,7 +22,6 @@ export default {
   computed: {
     btnClasses() {
       return {
-        btn: true,
         ...this.classes.reduce((obj, className) => {
           obj[className] = true;
           return obj;
@@ -42,7 +41,7 @@ export default {
 
 .next_button {
   color: #fff;
-  background-color: #ffc20e;
+  background-color: #0d6efd;
 }
 
 .edit-btn {
@@ -53,7 +52,7 @@ export default {
 }
 
 .edit-btn:hover {
-  background-color: #ffc20e;
+  background-color: #0d6efd;
   color: white;
 }
 

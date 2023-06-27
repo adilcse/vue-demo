@@ -22,7 +22,7 @@ export default {
 header {
   text-align: center;
   background: #FFF7EC;
-  border-bottom: 20px solid #ffc20e;
+  border-bottom: 20px solid #0d6efd;
   position: sticky;
   top: 0;
   left: 0;
