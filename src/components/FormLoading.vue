@@ -1,22 +1,22 @@
 <template>
     <div class="form-loading">
-      <div class="d-flex justify-content-center">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Loading...</span>
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
-      </div>
     </div>
-  </template>
+</template>
   
-  <script>
-  export default {
+<script>
+export default {
     name: 'FormLoading',
-  };
-  </script>
+};
+</script>
   
-  <style scoped>
-  .form-loading {
+<style scoped>
+.form-loading {
     margin-top: 1rem;
-  }
-  </style>
+}
+</style>
   

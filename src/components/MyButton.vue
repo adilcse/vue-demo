@@ -12,7 +12,7 @@ export default {
     classes: Array,
     buttonClick: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     submit: {
       type: String,

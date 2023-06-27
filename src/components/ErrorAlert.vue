@@ -1,30 +1,30 @@
 <template>
     <div v-show="hasError">
-      <div class="alert alert-danger" role="alert">
-        {{ errorMessage }}
-      </div>
+        <div class="alert alert-danger" role="alert">
+            {{ errorMessage }}
+        </div>
     </div>
-  </template>
+</template>
   
-  <script>
-  export default {
+<script>
+export default {
     name: 'ErrorAlert',
     props: {
-      hasError: {
-        type: Boolean,
-        default: false,
-      },
-      errorMessage: {
-        type: String,
-        default: '',
-      },
+        hasError: {
+            type: Boolean,
+            default: false,
+        },
+        errorMessage: {
+            type: String,
+            default: '',
+        },
     },
-  };
-  </script>
+};
+</script>
   
-  <style scoped>
-  .alert {
+<style scoped>
+.alert {
     margin-top: 1rem;
-  }
-  </style>
+}
+</style>
   
