@@ -126,7 +126,7 @@ export default {
         deleteItem(item) {
             if (item?.id) {
                 this.loading = true;
-                axios.delete('http://localhost:3000/api/v1/demo/' + item.id).then(res => res.json())
+                axios.delete('http://localhost:3000/api/v1/demo/' + item.id)
                     .then(() => this.getList())
                     .catch((error) => console.error(error))
                     .finally(() => this.loading = false)
