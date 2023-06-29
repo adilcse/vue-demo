@@ -4,7 +4,9 @@
       <h4 class="alert-heading">Success!</h4>
       <p>Your request has been served!</p>
       <hr />
-      <a href="/" class="alert-link">Go to Home</a>
+      <div @click="goToHome">
+        <b-button variant="success">Go to Home</b-button>
+      </div>
     </div>
   </div>
 </template>
@@ -13,6 +15,11 @@
 
 export default {
   name: 'FormSuccess',
+  methods: {
+    goToHome () {
+      this.$store.dispatch("goToHome");
+    }
+  }
 }
 </script>
   

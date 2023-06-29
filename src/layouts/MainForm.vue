@@ -24,9 +24,8 @@
                     <FormSuccessVue v-if="success" />
                     <FormLoading v-else-if="loading" />
                     <form v-else @submit.prevent="onSubmit" method="post" role="form" class="php-email-form">
-                        <ViewUser v-if="mode === 'view'" @onDeleteItem="deleteItem" @onEditClick="onEditClick"
-                            @onLoading="updateLoading" :users-list="usersList" />
-                        <CreateUser v-else :mode="mode" :userData="userData" v-on:input="handleInputChange" />
+                        <ViewUser v-if="mode === 'view'" @onLoading="updateLoading"  />
+                        <CreateUser v-else :mode="mode" :userData="userData" />
                         <ErrorAlert :hasError="hasError" :errorMessage="errorMessage" />
                         <div v-if="mode == 'create' || mode == 'edit'" class="text-right" style="text-align: right">
                             <MyButton label="Create" :classes="['btn', 'next_button']" type="submit" />
@@ -45,29 +44,13 @@ import ViewUser from './ViewUser.vue';
 import CreateUser from './CreateUser.vue';
 import FormSuccessVue from '../components/FormSuccess.vue';
 import ErrorAlert from '../components/ErrorAlert.vue';
-import axios from 'axios';
+import { mapState } from 'vuex';
 import { required, minLength } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate';
 
 export default {
     name: 'MainForm',
     mixins: [validationMixin],
-    data() {
-        return {
-            usersList: [],
-            loading: false,
-            success: false,
-            hasError: false,
-            userData: {
-                id: null,
-                name: '',
-                catagory: '',
-                type: ''
-            },
-            mode: 'view',
-            errorMessage: ''
-        }
-    },
     components: {
         FormLoading,
         ViewUser,
@@ -76,7 +59,10 @@ export default {
         FormSuccessVue,
         ErrorAlert
     },
-    validations: {
+    computed: {
+    ...mapState(['userData', 'mode', 'success', 'loading', 'errorMessage', 'hasError']),
+  },
+  validations: {
         userData: {
             name: {
                 required,
@@ -95,133 +81,20 @@ export default {
 
     methods: {
         modeChange(mode) {
-            if (mode == 'view') {
-                this.userData = {
-                    id: null,
-                    name: '',
-                    catagory: '',
-                    type: ''
-                },
-                    this.mode = 'view';
-            } else if (mode == 'create') {
-                this.userData = {
-                    id: null,
-                    name: '',
-                    catagory: '',
-                    type: ''
-                },
-                    this.mode = 'create';
-            }
+            this.$store.commit('modeChange', mode);
         },
-        updateLoading(data) {
-            this.loading = data
+        updateLoading(status) {
+            this.$store.commit('updateLoading', status);
         },
-        onEditClick(item) {
-            this.userData.id = item.id;
-            this.userData.name = item.name;
-            this.userData.catagory = item.catagory;
-            this.userData.type = item.type;
-            this.mode = 'edit';
-        },
-        deleteItem(item) {
-            if (item?.id) {
-                this.loading = true;
-                axios.delete('http://localhost:3000/api/v1/demo/' + item.id)
-                    .then(() => this.getList())
-                    .catch((error) => console.error(error))
-                    .finally(() => this.loading = false)
-            }
-        },
-        createItem(data) {
-            this.loading = true;
-            axios.post("http://localhost:3000/api/v1/demo", data)
-                .then((response) => {
-                    if (response.status == 201) {
-                        this.mode = 'view';
-                        this.loading = false;
-                        this.success = true;
-                        this.getList()
-                    } else {
-                        throw new Error(response)
-                    }
-                })
-                .catch((error) => {
-                    this.loading = false;
-                    this.errorMessage = error?.response?.data?.message;
-                    this.hasError = true;
-                    console.error("There was an error!", error);
-                });
-        },
-        updateItem(data) {
-            this.loading = true;
-            axios.patch("http://localhost:3000/api/v1/demo/" + data.id, data)
-                .then(async () => {
-                    this.loading = false;
-                    this.success = true;
-                })
-                .catch((error) => {
-                    this.loading = false;
-                    this.errorMessage = error?.response?.data?.message;
-                    this.hasError = true;
-                    console.error("There was an error!", error);
-                });
-        },
-
         onSubmit() {
-            this.errorMessage = "All fields are required! Name must be atleast 3 charecters";
-            this.hasError = false;
-
-            if (this.mode == 'create') {
-                this.$v.$touch();
-                if (this.$v.$invalid) {
-                    this.hasError = true;
-                } else {
-                    this.createItem({
-                        name: this.userData.name,
-                        catagory: this.userData.catagory,
-                        type: this.userData.type,
-                    });
-                }
-            } else if (this.mode == 'edit') {
-                if (
-                    !this.userData.name ||
-                    !this.userData.catagory ||
-                    !this.userData.type
-                ) {
-                    this.hasError = true;
-                } else {
-                    this.updateItem({
-                        id: this.userData.id,
-                        name: this.userData.name,
-                        catagory: this.userData.catagory,
-                        type: this.userData.type,
-                    });
-                }
-            }
-        },
-        getList() {
-            this.loading = true;
-            axios.get('http://localhost:3000/api/v1/demo')
-                .then(resp => {
-                    console.log(resp)
-                    if (resp.status == 200) {
-                        this.hasError = false;
-                        this.usersList = resp.data;
-                    } else {
-                        this.errorMessage = resp.statusText;
-                        this.hasError = true;
-                    }
-                })
-                .catch((error) => console.error(error))
-                .finally(() => this.loading = false)
-        },
-        handleInputChange(userData) {
-            this.userData = { ...this.userData, [userData.type]: userData.value };
+            this.$v.$touch();
+        if (this.$v.$invalid) {
+            this.$store.commit('setErrorMessage', 'All fields are required! Name must be at least 3 characters');
+            return this.$store.commit('setHasError', true);
+        }
+            this.$store.dispatch('onSubmit');
         }
     },
-    beforeMount() {
-        this.getList()
-    }
 };
 </script>
   

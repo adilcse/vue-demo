@@ -11,6 +11,9 @@ import AppHeader from './components/AppHeader.vue';
 
 export default {
   name: 'App',
+  beforeMount() {
+    this.$store.dispatch('getList')
+  },
   components: {
     MainForm,
     AppHeader

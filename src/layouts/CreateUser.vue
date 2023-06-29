@@ -30,7 +30,8 @@ export default {
             console.log("key up")
         },
         handleInputChange(type, value) {
-            this.$emit('input', { type, value });
+            // this.$emit('input', { type, value });
+            this.$store.commit('handleInputChange', { type, value });
         },
     },
 };
