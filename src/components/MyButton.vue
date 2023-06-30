@@ -1,5 +1,5 @@
 <template>
-  <b-button variant="outline-primary" :class="btnClasses" @click="buttonClick" type="type">
+  <b-button variant="outline-primary" :class="btnClasses" @click="buttonClick" :type="type">
     {{ label }}
   </b-button>
 </template>

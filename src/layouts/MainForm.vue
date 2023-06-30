@@ -23,14 +23,14 @@
 
                     <FormSuccessVue v-if="success" />
                     <FormLoading v-else-if="loading" />
-                    <form v-else @submit.prevent="onSubmit" method="post" role="form" class="php-email-form">
+                    <b-form v-else @submit.prevent="onSubmit" method="post" role="form" class="php-email-form">
                         <ViewUser v-if="mode === 'view'" @onLoading="updateLoading"  />
                         <CreateUser v-else :mode="mode" :userData="userData" />
                         <ErrorAlert :hasError="hasError" :errorMessage="errorMessage" />
                         <div v-if="mode == 'create' || mode == 'edit'" class="text-right" style="text-align: right">
                             <MyButton label="Create" :classes="['btn', 'next_button']" type="submit" />
                         </div>
-                    </form>
+                    </b-form>
                 </div>
             </div>
         </div>

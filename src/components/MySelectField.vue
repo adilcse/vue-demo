@@ -1,15 +1,23 @@
 <template>
     <div class="mb-4">
-        <label for="floatingMySelectField" class="form-label">
-            {{ label }}<span class="required">*</span>
-        </label>
-        <select class="form-select form-control-lg" v-model="selectedCategory" id="floatingMySelectField"
-            aria-label="Select Category" :name="name">
-            <option value="">--Select--</option>
-            <option v-for="category in categories" :value="category" :key="category">
-                {{ category }}
-            </option>
-        </select>
+        <b-form-group
+        :id="inputId + 'input-group'"
+         :label-for="inputId">
+         <template v-slot:label>
+            <span v-html="myLabel"></span>
+        </template>
+        <b-form-select
+          :id="inputId"
+          v-model="selectedCategory"
+          required
+          class="w-100 form-control"
+        >
+        <b-form-select-option :value="''" disabled>Please select an option</b-form-select-option>
+        <b-form-select-option  v-for="category in categories" :value="category" :key="category">
+            {{ category }}
+        </b-form-select-option>
+    </b-form-select>
+      </b-form-group>
     </div>
 </template>
   
@@ -32,6 +40,15 @@ export default {
         return {
             selectedCategory: this.value,
         };
+    },
+    computed: {
+        inputId() {
+            // Generate a unique ID for the input element
+            return 'input_' + Math.random().toString(36).substr(2, 9);
+        },
+        myLabel () {
+            return this.label + '<span class="required">*</span>'
+        }
     },
     watch: {
         selectedCategory: {
